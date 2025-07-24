@@ -1,3 +1,6 @@
+
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
@@ -13,6 +16,10 @@ pnpm dev
 # or
 bun dev
 ```
+
+screenshots
+![Home Page](screenshots/image.png)
+![Home Page](screenshots/joblistpage.png)
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
