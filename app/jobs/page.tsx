@@ -48,7 +48,7 @@ const JobList = () => {
         <div>
           <p className={`text-4xl  font-bold`}>Opportunities</p>
           <p className="text-sm text-muted-foreground mt-0.5">
-            Showing results
+            Showing results {jobs.length} jobs
           </p>
         </div>
         <div className="flex items-center gap-2">
