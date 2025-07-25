@@ -1,38 +1,17 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { Badge } from "@/components/ui/badge";
-import { jobData } from "@/lib/data";
+import { jobprops } from "@/type";
 
 import { MapPin, CheckCircle2 } from "lucide-react";
 import { CiCirclePlus } from "react-icons/ci";
 import { VscFlame } from "react-icons/vsc";
 import { IoLocationOutline } from "react-icons/io5";
 import { MdDateRange } from "react-icons/md";
+import { getCategoryClasses } from "@/lib/catagorycolors";
 
 interface JobDescriptionProps {
-  job?: {
-    id: number;
-    title: string;
-    description: string;
-    responsibilities: string[];
-    ideal_candidate: {
-      age: string;
-      gender: string;
-      traits: string[];
-    };
-    when_where: string;
-    about: {
-      posted_on: string;
-      deadline: string;
-      location: string;
-      start_date: string;
-      end_date: string;
-      categories: string[];
-      required_skills: string[];
-    };
-    company: string;
-    image: string;
-  };
+  job?: jobprops;
 }
 
 const JobDescription: React.FC<JobDescriptionProps> = ({ job }) => {
@@ -48,112 +27,107 @@ const JobDescription: React.FC<JobDescriptionProps> = ({ job }) => {
         <div className="mt-6">
           <p className="text-xl font-semibold mb-4">Responsibilities</p>
           <ul className="space-y-1 text-gray-700">
-            {job.responsibilities.map((resp, index) => (
-              <li key={index} className="flex items-start gap-2 mt-1">
-                <CheckCircle2 className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
-                <span>{resp}</span>
-              </li>
-            ))}
+            {job.responsibilities
+              .split("\n")
+              .filter(Boolean)
+              .map((resp, index) => (
+                <li key={index} className="flex items-start gap-2 mt-1">
+                  <CheckCircle2 className="h-4 w-4 text-green-500 mt-1 flex-shrink-0" />
+                  <span>{resp}</span>
+                </li>
+              ))}
           </ul>
         </div>
 
         <div className="mt-6">
           <p className="text-xl font-semibold mb-2">Ideal Candidate we want</p>
           <div className="pl-5">
-            <ul className="list-disc">
-              <li className="font-semibold  text-gray-700 ">
-                {job.ideal_candidate.age}{" "}
-                <span>{job.ideal_candidate.gender}</span>{" "}
-                <span>{job.title}</span>
-              </li>
-              {job.ideal_candidate.traits.map((trait, index) => {
-                const [bold, rest] = trait.split(/:(.+)/);
-                return (
-                  <li key={index}>
-                    <strong>{bold.trim()}</strong>
-                    {rest ? `:${rest}` : ""}
-                  </li>
-                );
-              })}
-            </ul>
+            <p className="font-semibold text-gray-700 mb-2">
+              {job.idealCandidate}
+            </p>
           </div>
         </div>
 
-        <div className="mt-2 py-1">
+        <div className="mt-6 py-1">
           <p className="text-xl font-semibold mb-2">When & Where</p>
           <div className="flex items-center gap-2 text-gray-700 text-sm">
             <MapPin className="h-6 w-6 text-blue-500" />
-            <span>{job.when_where}</span>
+            <span>{job.whenAndWhere}</span>
           </div>
         </div>
       </div>
       <div>
         <div>
-          <p className="text-xl font-extrabold mb-2">About</p>
+          <p className="text-xl font-extrabold mb-2 -mt-3">About</p>
 
-          <div className="flex items-center gap-2 mb-2 text-gray-700">
-        <div className="border-2 border-black bg-gray-100 rounded-full p-2 flex items-center justify-center w-10 h-10">
-              <CiCirclePlus className="h-6 w-6 text-blue-500 " />
-            </div>
+          <div className="flex items-center gap-2 mb-2 text-gray-700 text-sm">
+            <CiCirclePlus className="h-6 w-6 text-blue-500 " />
+
             <div>
               <p>Posted on</p>
-              <p className="font-semibold">{job.about.posted_on}</p>
+              <p className="font-semibold">{job.datePosted}</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 text-gray-700 mb-2">
+          <div className="flex items-center gap-2 text-gray-700 mb-2 text-sm">
             <VscFlame className="h-6 w-6 text-blue-500" />
             <div>
-              <p>Posted on</p>
-              <p className="font-semibold">{job.about.posted_on}</p>
+              <p>Deadline</p>
+              <p className="font-semibold">{job.deadline}</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 text-gray-700 mb-2">
+          <div className="flex items-center gap-2 text-gray-700 mb-2 text-sm">
             <IoLocationOutline className="h-6 w-6 text-blue-500" />
             <div>
               <p>Location</p>
-              <p className="font-semibold">{job.about.location}</p>
+              <p className="font-semibold">
+                {Array.isArray(job.location)
+                  ? job.location.join(", ")
+                  : job.location}
+              </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 text-gray-700 mb-2">
+          <div className="flex items-center gap-2 text-gray-700 mb-2 text-sm">
             <MdDateRange className="h-6 w-6 text-blue-500" />
             <div>
               <p>Start Date</p>
-              <p className="font-semibold">{job.about.start_date}</p>
+              <p className="font-semibold">{job.startDate}</p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2 text-gray-700 mb-2">
+          <div className="flex items-center gap-2 text-gray-700 mb-2 text-sm">
             <MdDateRange className="h-6 w-6 text-blue-500" />
             <div>
               <p>End Date</p>
-              <p className="font-semibold">{job.about.end_date}</p>
+              <p className="font-semibold">{job.endDate}</p>
             </div>
           </div>
         </div>
         <hr className="my-6 border-t border-gray-200" />
 
-        <div className="mt-4 py-2">
+        <div className="mt-2 mb-2 py-1">
           <p className="text-xl font-extrabold ">Categories</p>
-          <div className="flex flex-wrap gap-2 mt-4">
-            {job.about.categories.map((category, index) => (
+          <div className="flex flex-wrap gap-2 mt-2 text-sm">
+            {job.categories.map((category, index) => (
               <Badge
                 key={index}
-                className="bg-blue-100 py-2 text-blue-800 rounded-2xl"
+                className={`px-3 py-1 text-xs font-medium rounded-md ${getCategoryClasses(
+                  category
+                )}`}
               >
                 {category}
               </Badge>
             ))}
           </div>
         </div>
-          <hr className="my-6 border-t border-gray-200" />
+        <hr className="my-10 border-t border-gray-200" />
 
-        <div className="mt-4 py-2">
+        <div className="mt-2 py-1">
           <p className="text-xl font-extrabold ">Required Skills</p>
           <div className="flex flex-wrap gap-2 mt-4">
-            {job.about.required_skills.map((skill, index) => (
+            {job.requiredSkills.map((skill, index) => (
               <Badge
                 key={index}
                 className="bg-blue-100 py-2 text-blue-800 rounded-2xl"
