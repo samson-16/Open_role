@@ -1,8 +1,12 @@
 import Link from "next/link";
+import Nav from "./components/Nav";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 p-6">
+    <>
+      <Nav/>
+     <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100 p-6">
+      
       <div className="text-center max-w-xl mx-auto">
         <div className="mb-8">
           <img
@@ -17,7 +21,10 @@ export default function Home() {
             Discover, apply, and track jobs tailored for you. Start your journey
             to a brighter career with our modern job application platform.
           </p>
-          <Link href="/jobs" className="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-semibold shadow-md hover:bg-blue-700 transition-all duration-200 inline-block">
+          <Link
+            href="/jobs"
+            className="!bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-semibold shadow-md hover:bg-blue-700 transition-all duration-200 inline-block"
+          >
             Browse Jobs
           </Link>
         </div>
@@ -37,5 +44,7 @@ export default function Home() {
         </div>
       </div>
     </main>
+    </>
+   
   );
 }

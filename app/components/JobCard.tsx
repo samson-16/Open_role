@@ -5,6 +5,12 @@ import { Badge } from "@/components/ui/badge";
 // import { jobData } from "@/lib/data";
 import { JobCardProps } from "@/type";
 import { getCategoryClasses } from "@/lib/catagorycolors";
+
+import { useSession } from "next-auth/react";
+import { redirect, useRouter } from "next/navigation";
+import toast, { Toaster } from 'react-hot-toast';
+import { FaRegBookmark, FaBookmark } from "react-icons/fa6";
+
 // function getCategoryColor(category: string) {
 //   switch (category) {
 //     case "Marketing":
@@ -28,7 +34,29 @@ const JobCard = ({
   logoUrl,
   categories,
   opType,
+  isBookmarked = false,
+  onToggleBookmark,
 }: JobCardProps) => {
+  // const router = useRouter()
+  const { data: session } = useSession();
+  // if (!session) {
+  //    console.log("Please login")
+  //    toast("Please login to bookmark jobs")
+  //    redirect("/login")
+
+  // }
+
+  const handleBookmarkClick = (e: React.MouseEvent) => {
+    e.preventDefault(); // prevent navigation on click
+    if (!session) {
+      return alert("Please sign in to bookmark jobs");
+    }
+    onToggleBookmark?.(id, isBookmarked);
+  };
+
+
+  
+ 
   return (
     <div className="flex bg-white rounded-3xl shadow-sm p-4 w-full max-w-4xl">
       <div className="flex-shrink-0 flex items-start justify-center py-2">
@@ -40,21 +68,26 @@ const JobCard = ({
                 alt={orgName}
                 className="object-contain"
               />
-              
             </>
           ) : (
-           <AvatarFallback className="bg-gray-200 text-gray-700 text-2xl font-bold">
-                {orgName ? orgName.trim().split(" ")[0][0] : ""}
-              </AvatarFallback>
+            <AvatarFallback className="bg-gray-200 text-gray-700 text-2xl font-bold">
+              {orgName ? orgName.trim().split(" ")[0][0] : ""}
+            </AvatarFallback>
           )}
         </Avatar>
       </div>
       <div className="flex flex-col gap-2 w-full px-4">
-        <h2 className="text-xl font-bold text-gray-900">{title}</h2>
+          <div className="flex justify-between">
+          <h2 className="text-xl font-bold text-gray-900">{title}</h2>
+          <button onClick={handleBookmarkClick} className="text-xl text-gray-500 hover:text-blue-600">
+            {isBookmarked ? <FaBookmark /> : <FaRegBookmark />}
+          </button>
+          </div>
         <p className="text-sm text-gray-500">
           {orgName} &bull;{" "}
           {Array.isArray(location) ? location.join(", ") : location}
         </p>
+       
         <p className="text-gray-700 text-sm">{description}</p>
         <div className="mt-2 flex flex-wrap gap-2 items-center">
           <div>
