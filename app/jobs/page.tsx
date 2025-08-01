@@ -30,7 +30,7 @@ const JobList = () => {
     const fetchJobs = async () => {
       try {
         const response = await axios.get(
-          "https://akil-backend.onrender.com/opportunities/search"
+          `${process.env.NEXT_PUBLIC_BASE_URL}opportunities/search`
         );
         setJobs(response.data.data || []);
       } catch (err) {
@@ -57,7 +57,7 @@ console.log("accessToken used for bookmarks:", accessToken);
 
       try {
         const res = await axios.get(
-          "https://akil-backend.onrender.com/bookmarks",
+          `${process.env.NEXT_PUBLIC_BASE_URL}bookmarks`,
           {
             headers: {
               Authorization: `Bearer ${(session as any).accessToken}`,
@@ -89,7 +89,7 @@ console.log("accessToken used for bookmarks:", accessToken);
     try {
       if (currentlyBookmarked) {
         await axios.delete(
-          `https://akil-backend.onrender.com/bookmarks/${jobId}`,
+          `${process.env.NEXT_PUBLIC_BASE_URL}bookmarks/${jobId}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -99,7 +99,7 @@ console.log("accessToken used for bookmarks:", accessToken);
         setBookmarkedJobs((prev) => prev.filter((id) => id !== jobId));
       } else {
         await axios.post(
-          `https://akil-backend.onrender.com/bookmarks/${jobId}`,
+          `${process.env.NEXT_PUBLIC_BASE_URL}bookmarks/${jobId}`,
           {},
           {
             headers: {
